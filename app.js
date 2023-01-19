@@ -1,7 +1,11 @@
 document.addEventListener('DOMContentLoaded', () => {
-  
-  // card options
-  const cardArray = [
+  /*
+todo : 게임 state 관리 
+*/
+
+
+  // card Data
+  const cardData = [
     {
       name: 'fox',
       img: 'images/fox.png'
@@ -35,8 +39,48 @@ document.addEventListener('DOMContentLoaded', () => {
       img: 'images/pig.png'
     },
   ];
+  
+  let cardArray = [];
 
-  cardArray.sort(() => 0.5 - Math.random());
+  // btn-controll
+  let btnArray = document.querySelectorAll('.count-btn');
+  let reset = document.querySelector('#reset');
+  for(let i = 0; i < btnArray.length; i++) {
+    btnArray[i].addEventListener('click', () => {
+      document.querySelector('.active').classList.remove('active');
+      btnArray[i].classList.add('active');
+      resetCards();
+      createBoard();
+    })
+  }
+  reset.addEventListener('click', () => {
+    resetCards();
+    createBoard();
+  })
+
+  // reset cards 
+  const resetCards = () => {
+    cardsWon = [];
+    cardArray = [];
+    grid.innerHTML = '';
+  }
+
+  // create cards && shuffle
+  const cardShuffle = () => {
+    let count = document.querySelector('.active').getAttribute('data-id');
+  
+    cardData.sort(() => 0.5 - Math.random());
+    let temp = cardData.slice(0, count);
+    for(let i = 0; i < temp.length; i++) {
+      cardArray.push(temp[i]);
+    }
+    temp.sort(() => 0.5 - Math.random());
+    for(let i = 0; i < temp.length; i++) {
+      cardArray.push(temp[i]);
+    }
+  }
+
+  // create board
 
   const grid = document.querySelector('.grid');
   const resultDisplay = document.querySelector('#result');
@@ -44,8 +88,9 @@ document.addEventListener('DOMContentLoaded', () => {
   let cardsChosenId = [];
   let cardsWon = [];
 
-  // create
   function createBoard() {
+    cardShuffle();
+    resultDisplay.textContent = cardsWon.length;
     for(let i = 0; i < cardArray.length; i++) {
       let card = document.createElement('img');
       card.setAttribute('src', 'images/question.png');
@@ -65,6 +110,8 @@ document.addEventListener('DOMContentLoaded', () => {
       alert('You found a match');
       cards[optionOneId].setAttribute('src', 'images/square.png');
       cards[optionTwoId].setAttribute('src', 'images/square.png');
+      cards[optionOneId].classList.add('check');
+      cards[optionTwoId].classList.add('check');
       cardsWon.push(cardsChosen);
     } else {
       cards[optionOneId].setAttribute('src', 'images/question.png');
@@ -87,7 +134,7 @@ document.addEventListener('DOMContentLoaded', () => {
     cardsChosenId.push(cardId);
     e.target.setAttribute('src', cardArray[cardId].img)
     if(cardsChosen.length === 2) {
-      setTimeout(checkForMatch, 500);
+      setTimeout(checkForMatch, 200);
     }
   }
   
