@@ -107,7 +107,7 @@ todo : 게임 state 관리
     const optionOneId = cardsChosenId[0];
     const optionTwoId = cardsChosenId[1];
     if(cardsChosen[0] === cardsChosen[1]) {
-      alert('You found a match');
+      alert('맞췄습니다!');
       cards[optionOneId].setAttribute('src', 'images/square.png');
       cards[optionTwoId].setAttribute('src', 'images/square.png');
       cards[optionOneId].classList.add('check');
@@ -116,14 +116,14 @@ todo : 게임 state 관리
     } else {
       cards[optionOneId].setAttribute('src', 'images/question.png');
       cards[optionTwoId].setAttribute('src', 'images/question.png');
-      alert('try again');
+      alert('다시 시도하세요!');
     }
 
     cardsChosen = [];
     cardsChosenId = [];
     resultDisplay.textContent = cardsWon.length;
     if(cardsWon.length === cardArray.length / 2) {
-      resultDisplay.textContent = 'Congratulations!'
+      resultDisplay.textContent = `${cardsWon.length} 성공!!`
     }
   }
 
